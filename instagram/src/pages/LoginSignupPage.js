@@ -1,10 +1,13 @@
 import React, { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGithub } from '@fortawesome/free-brands-svg-icons';
+
 import api from "../api/axios";
 
 const LoginSignupPage = () => {
   const { login } = useContext(AuthContext);
-  const [isLogin, setIsLogin] = useState(true); // Toggle between login and signup
+  const [isLogin, setIsLogin] = useState(true); // Toggles between login and signup
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -26,29 +29,28 @@ const LoginSignupPage = () => {
           email: formData.email,
           password: formData.password,
         });
-        login(response.data); // Save user data and token to context
+        login(response.data.token);
       } else {
         const response = await api.post("/auth/register", {
           username: formData.username,
           email: formData.email,
           password: formData.password,
         });
-        login(response.data); // Log in the user after successful signup
+        login(response.data.token); // Log in the user after successful signup
       }
     } catch (err) {
-      console.log(err); // DELETE
       setError(err.response?.data?.error || "Something went wrong");
     }
   };
 
   const handleGitHubLogin = () => {
-    window.location.href = "http://localhost:3000/auth/github"; // Replace with your backend URL
+    window.location.href = "http://localhost:3000/auth/github";
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-100 to-gray-300">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br">
       <div className="w-full max-w-md bg-white p-8 shadow-xl rounded-lg">
-        <h2 className="text-3xl font-bold text-center mb-6">
+        <h2 className="text-3xl font-bold text-center mb-6 text-black">
           {isLogin ? "Welcome Back!" : "Create Your Account"}
         </h2>
         {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
@@ -91,10 +93,11 @@ const LoginSignupPage = () => {
           className="btn btn-outline w-full flex items-center justify-center gap-2"
           onClick={handleGitHubLogin}
         >
+          <FontAwesomeIcon icon={faGithub} className="text-lg" /> {/* GitHub Icon */}
           Continue with GitHub
         </button>
         <p className="text-sm text-center mt-4">
-          {isLogin ? "Don’t have an account?" : "Already have an account?"}{" "}
+          {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
           <button
             onClick={() => setIsLogin(!isLogin)}
             className="text-blue-500 hover:underline"
