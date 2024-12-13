@@ -10,6 +10,7 @@
     "axios": "^1.7.9",
     "cra-template": "1.2.0",
     "daisyui": "^4.12.20",
+    "date-fns": "^4.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.0.2",

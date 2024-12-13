@@ -18,6 +18,12 @@ function HomePage() {
         {/* Toggle Buttons */}
         <div className="flex justify-center mb-4 gap-4">
           <button
+            className={`btn ${tab === "recents" ? "btn-primary" : "btn-ghost"}`}
+            onClick={() => setTab("recents")}
+          >
+            Recents
+          </button>
+          <button
             className={`btn ${
               tab === "following" ? "btn-primary" : "btn-ghost"
             }`}
@@ -25,16 +31,10 @@ function HomePage() {
           >
             Following
           </button>
-          <button
-            className={`btn ${tab === "recents" ? "btn-primary" : "btn-ghost"}`}
-            onClick={() => setTab("self")}
-          >
-            Recents
-          </button>
         </div>
 
         {/* Posts */}
-        <div className="flex-1 overflow-y-auto">
+        <div className="flex-1 overflow-y-auto scroll-container">
           <Posts tab={tab} />
         </div>
       </main>
