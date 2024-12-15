@@ -14,7 +14,7 @@ export const AuthProvider = ({ children }) => {
     setUser(token); // Set token as user state
     localStorage.setItem('token', token);
     console.log('Successfully logged in!');
-    window.location.href = '/';
+    window.location.href = '/'; // Take the user to the home page after logging in
   };
 
   const logout = () => {

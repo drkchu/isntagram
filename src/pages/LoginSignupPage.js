@@ -7,7 +7,7 @@ import api from "../api/axios";
 
 const LoginSignupPage = () => {
   const { login } = useContext(AuthContext);
-  const [isLogin, setIsLogin] = useState(true); // Toggles between login and signup
+  const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -44,7 +44,7 @@ const LoginSignupPage = () => {
   };
 
   const handleGitHubLogin = () => {
-    window.location.href = "http://localhost:3000/auth/github";
+    window.location.href = "http://localhost:3000/auth/github"; // Endpoint for GitHub OAuth
   };
 
   return (
