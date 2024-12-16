@@ -39,10 +39,7 @@ const CommentList = ({ comments, currentUserId, onDelete }) => {
             <button
               onClick={() => onDelete(comment.id)}
               style={{
-                background: "none",
-                border: "none",
                 cursor: "pointer",
-                color: "red",
                 fontSize: "1.2rem",
               }}
               aria-label="Delete comment"

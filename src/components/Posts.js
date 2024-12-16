@@ -122,6 +122,7 @@ function Posts({ tab }) {
               {post._count.likes} {post._count.likes === 1 ? "like" : "likes"}
             </span>
           </div>
+          {/* Comments */}
           <CommentSection postId={post.id}/>
         </div>
       ))}
