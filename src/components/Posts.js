@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { formatDistanceToNow } from "date-fns";
 import api from "../api/axios";
+import CommentSection from "./CommentSection";
 
 // Icon stuff
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -121,6 +122,7 @@ function Posts({ tab }) {
               {post._count.likes} {post._count.likes === 1 ? "like" : "likes"}
             </span>
           </div>
+          <CommentSection postId={post.id}/>
         </div>
       ))}
     </div>
