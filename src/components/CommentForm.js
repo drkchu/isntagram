@@ -30,7 +30,6 @@ const CommentForm = ({ onSubmit }) => {
           width: "100%",
           padding: "8px",
           borderRadius: "5px",
-          border: "1px solid",
         }}
         required
       ></textarea>
