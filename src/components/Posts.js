@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
 import api from "../api/axios";
 import CommentSection from "./CommentSection";
@@ -30,8 +31,8 @@ function Posts({ tab }) {
         } else {
           setMessage(""); // Clear message if posts are found
         }
-
         setPosts(data);
+        console.log(data)
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
@@ -84,7 +85,7 @@ function Posts({ tab }) {
         //
         <div key={post.id} className="border-gray-800 rounded-lg p-4 shadow-md">
           {/* Post owner */}
-          <h3 className="font-bold">{post.user.username}</h3>
+          <Link to={`/profile/${post.userId}`} className="font-bold">{post.user.username}</Link>
           {/* Posts caption */}
           <p>{post.content}</p>
           {/* Post Time */}

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { FaTrash } from "react-icons/fa";
 import { formatDistanceToNow } from "date-fns";
 
@@ -23,7 +24,9 @@ const CommentList = ({ comments, currentUserId, onDelete }) => {
         >
           <div>
             <div>
-              <strong>{comment.user?.username || "Anonymous"}</strong>:{" "}
+              <Link to={`/profile/${comment.userId}`} className="font-bold">
+                {comment.user.username}
+              </Link>:{" "}
               {comment.content}
             </div>
             {/* Display the friendly timestamp */}

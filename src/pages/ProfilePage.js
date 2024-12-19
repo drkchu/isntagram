@@ -119,7 +119,7 @@ function ProfilePage() {
 
       {/* Edit Profile Button */}
 
-      {userProfile === "self" ? (
+      {userProfile === "self" || userProfile === jwtDecode(localStorage.getItem("token")).id ? ( // In case a user gets to their own profile page via their userId, not the self route
         <Link to="/profile/edit" className="btn btn-primary mt-4">
           Edit Profile
         </Link>
