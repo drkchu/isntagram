@@ -18,7 +18,7 @@ function Sidebar() {
       <Link to="/" className="btn btn-ghost text-2xl">
         <FontAwesomeIcon icon={faEnvelope} />
       </Link>
-      <Link to="/profile" className="btn btn-ghost text-2xl">
+      <Link to="/profile/self" className="btn btn-ghost text-2xl">
         <FontAwesomeIcon icon={faUser} />
       </Link>
     </div>

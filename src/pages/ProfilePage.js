@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +9,8 @@ function ProfilePage() {
   const [profile, setProfile] = useState(null);
   const [followers, setFollowers] = useState([]);
   const [following, setFollowing] = useState([]);
+  const [isFollowing, setIsFollowing] = useState(false);
+  const { userProfile } = useParams();
 
   const { logout } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -39,26 +41,58 @@ function ProfilePage() {
       navigate("/login-signup"); // Redirect to login-signup page
     }
 
-    const userId = jwtDecode(localStorage.getItem('token')).id;
+    const userIdProfile =
+      userProfile === "self"
+        ? jwtDecode(localStorage.getItem("token")).id
+        : userProfile;
+
+    const userId = jwtDecode(localStorage.getItem("token")).id;
 
     // Fetch profile data using the custom Axios instance
     const fetchProfile = async () => {
       try {
-        const profileRes = await api.get(`/users/${userId}`);
+        const profileRes = await api.get(`/users/${userIdProfile}`);
         setProfile(profileRes.data.user.profile);
 
-        const followersRes = await api.get(`/users/${userId}/followers`);
+        const followersRes = await api.get(`/users/${userIdProfile}/followers`);
         setFollowers(followersRes.data);
 
-        const followingRes = await api.get(`/users/${userId}/following`);
+        const followingRes = await api.get(`/users/${userIdProfile}/following`);
         setFollowing(followingRes.data);
+
+        const isFollowingUser = followersRes.data.some(
+          (user) => user.id === userId // user.id is the one of the profile's 
+        );
+
+        setIsFollowing(isFollowingUser);
       } catch (error) {
         console.error("Error fetching profile data:", error);
       }
     };
 
     fetchProfile();
-  }, [navigate, logout]);
+  }, [userProfile, navigate, logout]);
+
+  const handleFollow = async () => {
+    try {
+        console.log(profile);
+      await api.post(`/users/${profile.userId}/follow`);
+      setIsFollowing(true);
+      setFollowers((prev) => [...prev, { id: profile.userId }]); // Only adding the id, cuz we can always query the followers again
+    } catch (error) {
+      console.error("Error following user:", error);
+    }
+  };
+
+  const handleUnfollow = async () => {
+    try {
+      await api.post(`/users/${profile.userId}/unfollow`);
+      setIsFollowing(false);
+      setFollowers((prev) => prev.filter((f) => f.id !== profile.userId));
+    } catch (error) {
+      console.error("Error unfollowing user:", error);
+    }
+  };
 
   if (!profile) return <div>Loading...</div>;
 
@@ -84,9 +118,21 @@ function ProfilePage() {
       </a>
 
       {/* Edit Profile Button */}
-      <Link to="/profile/edit" className="btn btn-primary mt-4">
-        Edit Profile
-      </Link>
+
+      {userProfile === "self" ? (
+        <Link to="/profile/edit" className="btn btn-primary mt-4">
+          Edit Profile
+        </Link>
+      ) : (
+        <button
+          onClick={isFollowing ? handleUnfollow : handleFollow}
+          className={`btn mt-4 ${
+            isFollowing ? "btn-danger" : "btn-primary"
+          }`}
+        >
+          {isFollowing ? "Unfollow" : "Follow"}
+        </button>
+      )}
 
       {/* Follow Information */}
       <div className="flex gap-8 mt-6">

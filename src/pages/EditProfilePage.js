@@ -36,7 +36,7 @@ function EditProfilePage() {
     e.preventDefault();
     try {
       await api.patch(`/users/${userId}/profile`, formData);
-      navigate(`/profile/`);
+      navigate(`/profile/self`);
     } catch (err) {
       console.error("Error updating profile:", err);
     }
