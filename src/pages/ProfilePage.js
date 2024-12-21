@@ -10,6 +10,8 @@ function ProfilePage() {
   const [followers, setFollowers] = useState([]);
   const [following, setFollowing] = useState([]);
   const [isFollowing, setIsFollowing] = useState(false);
+  const [modalData, setModalData] = useState([]);
+  const [modalTitle, setModalTitle] = useState("");
   const { userProfile } = useParams();
 
   const { logout } = useContext(AuthContext);
@@ -61,7 +63,7 @@ function ProfilePage() {
         setFollowing(followingRes.data);
 
         const isFollowingUser = followersRes.data.some(
-          (user) => user.id === userId // user.id is the one of the profile's 
+          (user) => user.id === userId // user.id is the one of the profile's
         );
 
         setIsFollowing(isFollowingUser);
@@ -71,11 +73,10 @@ function ProfilePage() {
     };
 
     fetchProfile();
-  }, [userProfile, navigate, logout]);
+  }, [userProfile, navigate, logout, isFollowing]);
 
   const handleFollow = async () => {
     try {
-        console.log(profile);
       await api.post(`/users/${profile.userId}/follow`);
       setIsFollowing(true);
       setFollowers((prev) => [...prev, { id: profile.userId }]); // Only adding the id, cuz we can always query the followers again
@@ -92,6 +93,18 @@ function ProfilePage() {
     } catch (error) {
       console.error("Error unfollowing user:", error);
     }
+  };
+
+  const openModal = (title, data) => {
+    setModalTitle(title);
+    setModalData(data);
+    const modal = document.getElementById("modal-dialog");
+    if (modal) modal.showModal();
+  };
+
+  const closeModal = () => {
+    const modal = document.getElementById("modal-dialog");
+    if (modal) modal.close();
   };
 
   if (!profile) return <div>Loading...</div>;
@@ -119,16 +132,15 @@ function ProfilePage() {
 
       {/* Edit Profile Button */}
 
-      {userProfile === "self" || userProfile === jwtDecode(localStorage.getItem("token")).id ? ( // In case a user gets to their own profile page via their userId, not the self route
+      {userProfile === "self" ||
+      userProfile === jwtDecode(localStorage.getItem("token")).id ? ( // In case a user gets to their own profile page via their userId, not the self route
         <Link to="/profile/edit" className="btn btn-primary mt-4">
           Edit Profile
         </Link>
       ) : (
         <button
           onClick={isFollowing ? handleUnfollow : handleFollow}
-          className={`btn mt-4 ${
-            isFollowing ? "btn-danger" : "btn-primary"
-          }`}
+          className={`btn mt-4 ${isFollowing ? "btn-danger" : "btn-primary"}`}
         >
           {isFollowing ? "Unfollow" : "Follow"}
         </button>
@@ -138,13 +150,42 @@ function ProfilePage() {
       <div className="flex gap-8 mt-6">
         <div>
           <p className="font-bold">{followers.length}</p>
-          <p>Followers</p>
+          <button onClick={() => openModal("Followers", followers)}>
+            Followers
+          </button>
         </div>
         <div>
           <p className="font-bold">{following.length}</p>
-          <p>Following</p>
+          <button onClick={() => openModal("Following", following)}>
+            following
+          </button>
         </div>
       </div>
+      {/* DaisyUI Dialog */}
+      <dialog id="modal-dialog" className="modal">
+        <form method="dialog" className="modal-box">
+          <h3 className="font-bold text-lg">{modalTitle}</h3>
+          <ul className="py-4">
+            {modalData.map((user) => (
+              <li key={user.id} className="flex items-center gap-4 mb-4">
+                <img
+                  src={user.avatarUrl || "/default-avatar.png"} // !!! Change later
+                  alt={user.username}
+                  className="w-10 h-10 rounded-full"
+                />
+                <Link to={`/profile/${user.id}`} className="font-medium">
+                  {user.username}
+                </Link>
+              </li>
+            ))}
+          </ul>
+          <div className="modal-action">
+            <button className="btn" onClick={closeModal}>
+              Close
+            </button>
+          </div>
+        </form>
+      </dialog>
     </div>
   );
 }
