@@ -5,6 +5,8 @@ import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import api from "../api/axios";
 
+import Navbar from "../components/Sidebar";
+
 function ProfilePage() {
   const [profile, setProfile] = useState(null);
   const [followers, setFollowers] = useState([]);
@@ -98,7 +100,6 @@ function ProfilePage() {
   const openModal = (title, data) => {
     setModalTitle(title);
     setModalData(data);
-    console.log(data); // !!!
     const modal = document.getElementById("modal-dialog");
     if (modal) modal.showModal();
   };
@@ -111,57 +112,67 @@ function ProfilePage() {
   if (!profile) return <div>Loading...</div>;
 
   return (
-    <div className="p-8 flex flex-col items-center">
-      {/* Avatar */}
-      <img
-        src={profile.avatarUrl || "/anonymous.jpeg"}
-        alt="Avatar"
-        className="w-32 h-32 rounded-full object-cover mb-4"
-      />
+    <div className="flex">
+      {/* Sidebar */}
+      <Navbar />
 
-      {/* Profile Info */}
-      <h2 className="text-2xl font-bold">{profile.bio || "No bio yet"}</h2>
-      <p className="text-gray-500">{profile.location}</p>
-      <a
-        href={profile.website}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-      >
-        {profile.website}
-      </a>
+      {/* Main Content */}
+      <div className="flex-grow p-8 flex justify-center">
+        <div className="flex flex-col items-center max-w-md w-full">
+          {/* Avatar */}
+          <img
+            src={profile.avatarUrl || "/anonymous.jpeg"}
+            alt="Avatar"
+            className="w-32 h-32 rounded-full object-cover mb-4"
+          />
 
-      {/* Edit Profile Button */}
+          {/* Profile Info */}
+          <h2 className="text-2xl font-bold">{profile.bio || "No bio yet"}</h2>
+          <p className="text-gray-500">{profile.location}</p>
+          <a
+            href={profile.website}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+          >
+            {profile.website}
+          </a>
 
-      {userProfile === "self" ||
-      userProfile === jwtDecode(localStorage.getItem("token")).id ? ( // In case a user gets to their own profile page via their userId, not the self route
-        <Link to="/profile/edit" className="btn btn-primary mt-4">
-          Edit Profile
-        </Link>
-      ) : (
-        <button
-          onClick={isFollowing ? handleUnfollow : handleFollow}
-          className={`btn mt-4 ${isFollowing ? "btn-danger" : "btn-primary"}`}
-        >
-          {isFollowing ? "Unfollow" : "Follow"}
-        </button>
-      )}
+          {/* Edit Profile Button */}
+          {userProfile === "self" ||
+          userProfile === jwtDecode(localStorage.getItem("token")).id ? (
+            <Link to="/profile/edit" className="btn btn-primary mt-4">
+              Edit Profile
+            </Link>
+          ) : (
+            <button
+              onClick={isFollowing ? handleUnfollow : handleFollow}
+              className={`btn mt-4 ${
+                isFollowing ? "btn-danger" : "btn-primary"
+              }`}
+            >
+              {isFollowing ? "Unfollow" : "Follow"}
+            </button>
+          )}
 
-      {/* Follow Information */}
-      <div className="flex gap-8 mt-6">
-        <div>
-          <p className="font-bold">{followers.length}</p>
-          <button onClick={() => openModal("Followers", followers)}>
-            Followers
-          </button>
-        </div>
-        <div>
-          <p className="font-bold">{following.length}</p>
-          <button onClick={() => openModal("Following", following)}>
-            following
-          </button>
+          {/* Follow Information */}
+          <div className="flex gap-8 mt-6">
+            <div>
+              <p className="font-bold">{followers.length}</p>
+              <button onClick={() => openModal("Followers", followers)}>
+                Followers
+              </button>
+            </div>
+            <div>
+              <p className="font-bold">{following.length}</p>
+              <button onClick={() => openModal("Following", following)}>
+                Following
+              </button>
+            </div>
+          </div>
         </div>
       </div>
+
       {/* DaisyUI Dialog */}
       <dialog id="modal-dialog" className="modal">
         <form method="dialog" className="modal-box">
@@ -174,7 +185,11 @@ function ProfilePage() {
                   alt={user.username}
                   className="w-10 h-10 rounded-full"
                 />
-                <Link to={`/profile/${user.id}`} className="font-medium" onClick={closeModal}>
+                <Link
+                  to={`/profile/${user.id}`}
+                  className="font-medium"
+                  onClick={closeModal}
+                >
                   {user.username}
                 </Link>
               </li>
