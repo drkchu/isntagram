@@ -98,6 +98,7 @@ function ProfilePage() {
   const openModal = (title, data) => {
     setModalTitle(title);
     setModalData(data);
+    console.log(data); // !!!
     const modal = document.getElementById("modal-dialog");
     if (modal) modal.showModal();
   };
@@ -113,7 +114,7 @@ function ProfilePage() {
     <div className="p-8 flex flex-col items-center">
       {/* Avatar */}
       <img
-        src={profile.avatarUrl}
+        src={profile.avatarUrl || "/anonymous.jpeg"}
         alt="Avatar"
         className="w-32 h-32 rounded-full object-cover mb-4"
       />
@@ -169,11 +170,11 @@ function ProfilePage() {
             {modalData.map((user) => (
               <li key={user.id} className="flex items-center gap-4 mb-4">
                 <img
-                  src={user.avatarUrl || "/default-avatar.png"} // !!! Change later
+                  src={user.avatarUrl || "/anonymous.jpeg"}
                   alt={user.username}
                   className="w-10 h-10 rounded-full"
                 />
-                <Link to={`/profile/${user.id}`} className="font-medium">
+                <Link to={`/profile/${user.id}`} className="font-medium" onClick={closeModal}>
                   {user.username}
                 </Link>
               </li>
