@@ -6,8 +6,16 @@ const PostModal = ({ onClose }) => {
   const [privacy, setPrivacy] = useState("PUBLIC");
   const [image, setImage] = useState(null);
 
+  const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB in bytes
+  
   const handleFileChange = (e) => {
-    setImage(e.target.files[0]);
+    const file = e.target.files[0];
+    if (file && file.size > MAX_FILE_SIZE) {
+      alert("File size exceeds 5 MB. Please choose a smaller file.");
+      setImage(null);
+      return;
+    }
+    setImage(file);
   };
 
   const handleSubmit = async (e) => {
@@ -18,8 +26,6 @@ const PostModal = ({ onClose }) => {
     formData.append("privacy", privacy);
     formData.append("image", image);
 
-
-    
     try {
       const response = await api.post("/posts", formData);
 
@@ -71,6 +77,7 @@ const PostModal = ({ onClose }) => {
           <div className="form-control">
             <label className="label">
               <span className="label-text">Upload Image</span>
+              <small className="text-gray-500">Max file size: 5 MB</small>
             </label>
             <input
               type="file"
