@@ -9,11 +9,10 @@ const SearchModal = ({ onClose }) => {
   const handleSearch = async () => {
     try {
       const response = await api.get(
-        `/users/search?username=${searchQuery}&email=${searchQuery}`
+        `/users/search?username=${searchQuery}&email=${searchQuery}` // working with how I did the api LOL
       );
       if (response.status === 200) {
         const data = response.data;
-        console.log(data);
         setResults(data);
       } else {
         console.error("Failed to fetch search results");

@@ -3,9 +3,9 @@ Isntagram
 
 TODO:
 - create post from UI
+    - let people upload their own photo using a digital camera aesthetic or their actual camera.
 - delete a post
-- search for different users
 - messagin (this is gonna be a b word to set up)
-- handle follow requests
-- let people upload their own photo using a digital camera aesthetic or their actual camera.
+- login through a guest user
 - loading animation when switching between tabs or pages
+- host that mofo

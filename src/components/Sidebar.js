@@ -9,9 +9,11 @@ import {
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import SearchModal from "./SearchModal";
+import PostModal from "./PostModal";
 
 function Sidebar() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isPostOpen, setIsPostOpen] = useState(false);
 
   return (
     <div className="p-4 flex flex-col gap-12 h-screen">
@@ -25,10 +27,13 @@ function Sidebar() {
       >
         <FontAwesomeIcon icon={faSearch} />
       </button>
-
-      <Link to="/" className="btn btn-ghost text-2xl">
+      {/* Create a post */}
+      <button
+        onClick={() => setIsPostOpen(true)}
+        className="btn btn-ghost text-2xl"
+      >
         <FontAwesomeIcon icon={faPlus} />
-      </Link>
+      </button>
       <Link to="/" className="btn btn-ghost text-2xl">
         <FontAwesomeIcon icon={faEnvelope} />
       </Link>
@@ -38,6 +43,8 @@ function Sidebar() {
 
       {/* Search Modal */}
       {isSearchOpen && <SearchModal onClose={() => setIsSearchOpen(false)} />}
+      {/* Post Modal */}
+      {isPostOpen && <PostModal onClose={() => setIsPostOpen(false)} />}
     </div>
   );
 }
