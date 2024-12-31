@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
 import api from "../api/axios";
 import CommentSection from "./CommentSection";
+import { AuthContext } from "../context/AuthContext";
+import { jwtDecode } from "jwt-decode";
 
 // Icon stuff
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -12,6 +14,7 @@ import { faHeart as emptyHeart } from "@fortawesome/free-regular-svg-icons";
 function Posts({ tab }) {
   const [posts, setPosts] = useState([]);
   const [message, setMessage] = useState("");
+  const { user } = useContext(AuthContext); // Get the current user from context
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -32,7 +35,7 @@ function Posts({ tab }) {
           setMessage(""); // Clear message if posts are found
         }
         setPosts(data);
-        console.log(data)
+        console.log(data);
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
@@ -73,6 +76,16 @@ function Posts({ tab }) {
     }
   };
 
+  // Function to handle post deletion
+  const handleDeletePost = async (postId) => {
+    try {
+      await api.delete(`/posts/${postId}`);
+      setPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId)); // Remove post from state
+    } catch (error) {
+      console.error("Error deleting post:", error);
+    }
+  };
+
   return (
     <div className="grid gap-4">
       {/* Display a message if there aren't any posts available */}
@@ -85,7 +98,26 @@ function Posts({ tab }) {
         //
         <div key={post.id} className="border-gray-800 rounded-lg p-4 shadow-md">
           {/* Post owner */}
-          <Link to={`/profile/${post.userId}`} className="font-bold">{post.user.username}</Link>
+          <div className="flex justify-between items-center">
+            <Link to={`/profile/${post.userId}`} className="font-bold">
+              {post.user.username}
+            </Link>
+            {/* Show delete button if the logged-in user is the post owner */}
+            {post.userId === jwtDecode(user).id && (
+              <button
+                onClick={() => handleDeletePost(post.id)}
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: "red",
+                  cursor: "pointer",
+                }}
+                aria-label="Delete post"
+              >
+                Delete
+              </button>
+            )}
+          </div>
           {/* Posts caption */}
           <p>{post.content}</p>
           {/* Post Time */}
@@ -124,7 +156,7 @@ function Posts({ tab }) {
             </span>
           </div>
           {/* Comments */}
-          <CommentSection postId={post.id}/>
+          <CommentSection postId={post.id} />
         </div>
       ))}
     </div>
