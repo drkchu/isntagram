@@ -5,6 +5,7 @@ TODO:
 
 - messagin (this is gonna be a b word to set up)
 - login through a guest user
+- add suggestion accounts stuff
 - loading animation when switching between tabs or pages
 - host that mofo
 - Extras

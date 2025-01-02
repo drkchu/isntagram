@@ -34,7 +34,7 @@ function Sidebar() {
       >
         <FontAwesomeIcon icon={faPlus} />
       </button>
-      <Link to="/" className="btn btn-ghost text-2xl">
+      <Link to="/messages" className="btn btn-ghost text-2xl">
         <FontAwesomeIcon icon={faEnvelope} />
       </Link>
       <Link to="/profile/self" className="btn btn-ghost text-2xl">

@@ -15,7 +15,6 @@ function Posts({ tab }) {
   const [posts, setPosts] = useState([]);
   const [message, setMessage] = useState("");
   const { user } = useContext(AuthContext); // Get the current user from context
-
   useEffect(() => {
     const fetchPosts = async () => {
       try {
