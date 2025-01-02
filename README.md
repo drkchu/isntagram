@@ -2,7 +2,7 @@
 Isntagram
 
 TODO:
-- View posts when on their profile
+
 - messagin (this is gonna be a b word to set up)
 - login through a guest user
 - loading animation when switching between tabs or pages

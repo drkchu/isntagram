@@ -12,6 +12,7 @@ function ProfilePage() {
   const [followers, setFollowers] = useState([]);
   const [following, setFollowing] = useState([]);
   const [isFollowing, setIsFollowing] = useState(false);
+  const [posts, setPosts] = useState([]);
   const [modalData, setModalData] = useState([]);
   const [modalTitle, setModalTitle] = useState("");
   const { userProfile } = useParams();
@@ -69,6 +70,9 @@ function ProfilePage() {
         );
 
         setIsFollowing(isFollowingUser);
+
+        const postsRes = await api.get(`/posts/user/${userIdProfile}`);
+        setPosts(postsRes.data);
       } catch (error) {
         console.error("Error fetching profile data:", error);
       }
@@ -168,6 +172,23 @@ function ProfilePage() {
               <button onClick={() => openModal("Following", following)}>
                 Following
               </button>
+            </div>
+          </div>
+          {/* Posts Grid */}
+          <div className="mt-8">
+            <div className="grid grid-cols-3 gap-4">
+              {posts.map((post) => (
+                <div key={post.id} className="relative">
+                  <img
+                    src={post.imageUrl}
+                    alt={post.content}
+                    className="w-full h-32 object-cover rounded-lg"
+                  />
+                  <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition">
+                    <p className="text-white text-sm">{post.content}</p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
