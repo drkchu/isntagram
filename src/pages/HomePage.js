@@ -41,13 +41,9 @@ function HomePage() {
 
   return (
     <div className="flex flex-col md:flex-row h-screen">
-      {/* Sidebar (Navbar) */}
-      <aside className="w-full md:w-2/12 p-4 border-gray-800 border-r">
         <Navbar />
-      </aside>
-
       {/* Main Content */}
-      <main className="flex flex-col w-full md:w-7/12 p-4">
+      <main className="flex flex-col w-full md:w-2/3 pt-4">
         {/* Toggle Buttons */}
         <div className="flex justify-center mb-4 gap-4">
           <button
@@ -73,7 +69,7 @@ function HomePage() {
       </main>
 
       {/* Suggested Accounts */}
-      <aside className="hidden md:block w-3/12 p-4 border-gray-800 border-l">
+      <aside className="hidden md:block w-1/3 p-4 border-gray-800 border-l">
         <SuggestedAccounts />
       </aside>
     </div>

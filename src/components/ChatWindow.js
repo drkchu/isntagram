@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { fetchMessages } from "../services/messagesService";
+import { fetchConversation } from "../services/messagesService";
 import { jwtDecode } from "jwt-decode";
 
 import MessageInput from "./MessageInput";
@@ -7,6 +7,7 @@ import MessageInput from "./MessageInput";
 const ChatWindow = ({ conversationId }) => {
   const currentUserId = jwtDecode(localStorage.getItem("token")).id;
   const [messages, setMessages] = useState([]);
+  const [participants, setParticipants] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const messagesEndRef = useRef(null); // Ref for scrolling to the bottom
@@ -23,8 +24,14 @@ const ChatWindow = ({ conversationId }) => {
       setLoading(true);
       setError(null);
       try {
-        const data = await fetchMessages(conversationId);
-        setMessages(data);
+        const data = await fetchConversation(conversationId);
+        console.log(data);
+        setMessages(data.messages);
+        setParticipants(
+          data.participants.filter(
+            (participant) => participant.user.id !== currentUserId
+          )
+        );
       } catch (err) {
         setError("Failed to load messages.");
       } finally {
@@ -33,7 +40,7 @@ const ChatWindow = ({ conversationId }) => {
     };
 
     loadMessages();
-  }, [conversationId]);
+  }, [conversationId, currentUserId]);
 
   useEffect(() => {
     scrollToBottom(); // Scroll to the bottom when messages change
@@ -57,13 +64,20 @@ const ChatWindow = ({ conversationId }) => {
 
   return (
     <div className="flex flex-col h-full">
+      {/* Participants Section */}
+      <div className="p-4 bg-gray-800 text-white border-b border-gray-700">
+        <p className="text-sm font-semibold">
+          Chat with:{" "}
+          {participants.map((p) => p.user.username).join(", ") || "No participants"}
+        </p>
+      </div>
       {/* Message List */}
       <div className="flex-1 overflow-y-auto p-4 space-y-2">
         {messages.map((message) => (
           <div
             key={message.id}
             className={`p-2 rounded-lg max-w-xs ${
-              message.sender.id === currentUserId
+              message.senderId === currentUserId
                 ? "bg-blue-500 text-white ml-auto self-end"
                 : "bg-gray-200 text-black self-start"
             }`}

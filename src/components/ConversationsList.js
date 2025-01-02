@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { fetchConversations } from "../services/messagesService";
+import { jwtDecode } from "jwt-decode";
 
 const ConversationsList = ({ onSelectConversation }) => {
   const [conversations, setConversations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const currentUserId = jwtDecode(localStorage.getItem("token")).id;
   useEffect(() => {
     const loadConversations = async () => {
       try {
@@ -42,7 +44,7 @@ const ConversationsList = ({ onSelectConversation }) => {
               {conversation.isGroup
                 ? conversation.name
                 : conversation.participants
-                    .filter((p) => !p.userId.includes("currentUserId"))[0]
+                    .filter((p) => !p.userId.includes(currentUserId))[0]
                     ?.user.username || "Unnamed Conversation"}
             </h2>
             <p className="text-sm text-gray-500">

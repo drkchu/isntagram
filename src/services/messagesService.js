@@ -22,6 +22,17 @@ export const fetchMessages = async (chatId) => {
   }
 };
 
+// Get a specific conversation
+export const fetchConversation = async (chatId) => {
+  try {
+    const response = await api.get(`/chats/${chatId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching conversation:", error);
+    throw error;
+  }
+};
+
 // Create a new conversation
 export const createConversation = async (
   participants,
