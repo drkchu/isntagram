@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { fetchConversation } from "../services/messagesService";
 import { jwtDecode } from "jwt-decode";
+import socket from "../services/websocket";
 
 import MessageInput from "./MessageInput";
 
@@ -40,6 +41,22 @@ const ChatWindow = ({ conversationId }) => {
     };
 
     loadMessages();
+
+    // Join the WebSocket room for this conversation
+    socket.emit("joinRoom", conversationId);
+
+    // Listen for new messages in this room
+    socket.on("newMessage", (newMessage) => {
+      console.log("New message received via WebSocket:", newMessage);
+      setMessages((prevMessages) => [...prevMessages, newMessage]);
+    });
+
+    // Cleanup: Leave the room and remove listeners when the component unmounts
+    return () => {
+      socket.emit("leaveRoom", conversationId); // Optional: Inform server when leaving
+      socket.off("newMessage"); // Remove the listener
+    };
+
   }, [conversationId, currentUserId]);
 
   useEffect(() => {
@@ -68,7 +85,8 @@ const ChatWindow = ({ conversationId }) => {
       <div className="p-4 bg-gray-800 text-white border-b border-gray-700">
         <p className="text-sm font-semibold">
           Chat with:{" "}
-          {participants.map((p) => p.user.username).join(", ") || "No participants"}
+          {participants.map((p) => p.user.username).join(", ") ||
+            "No participants"}
         </p>
       </div>
       {/* Message List */}
@@ -97,7 +115,11 @@ const ChatWindow = ({ conversationId }) => {
       <MessageInput
         conversationId={conversationId}
         onMessageSent={(newMessage) =>
-          setMessages((prev) => [...prev, newMessage])
+          socket.emit("sendMessage", {
+            conversationId,
+            content: newMessage,
+            sender: { id: currentUserId, username: "You" }, // Include sender details
+          })
         }
       />
     </div>
