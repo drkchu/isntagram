@@ -52,6 +52,16 @@ export const createConversation = async (
   }
 };
 
+export const deleteConversation = async (chatId) => {
+  try {
+    const response = await api.delete(`/chats/${chatId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting conversation:", error);
+    throw error;
+  }
+};
+
 // Send a message in a conversation
 export const sendMessage = async (chatId, content) => {
   try {
