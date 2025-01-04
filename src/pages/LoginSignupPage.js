@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGithub } from '@fortawesome/free-brands-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGithub } from "@fortawesome/free-brands-svg-icons";
 
 import api from "../api/axios";
 
@@ -42,6 +42,14 @@ const LoginSignupPage = () => {
     } catch (err) {
       setError(err.response?.data?.error || "Something went wrong");
     }
+  };
+
+  const handleGuestLogin = async () => {
+    const response = await api.post("/auth/login", {
+      email: "guest@gmail.com",
+      password: "1q2w3e4r5t",
+    });
+    login(response.data.token);
   };
 
   const handleGitHubLogin = () => {
@@ -88,13 +96,18 @@ const LoginSignupPage = () => {
           <button type="submit" className="btn btn-primary w-full">
             {isLogin ? "Login" : "Signup"}
           </button>
+          {isLogin && (
+            <div className="btn btn-accent w-full" onClick={handleGuestLogin}>
+              Login as a Guest
+            </div>
+          )}
         </form>
         <div className="divider">OR</div>
         <button
           className="btn btn-outline w-full flex items-center justify-center gap-2"
           onClick={handleGitHubLogin}
         >
-          <FontAwesomeIcon icon={faGithub} className="text-lg" /> {/* GitHub Icon */}
+          <FontAwesomeIcon icon={faGithub} className="text-lg" />
           Continue with GitHub
         </button>
         <p className="text-sm text-center mt-4">

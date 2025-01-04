@@ -77,6 +77,9 @@ function Posts({ tab }) {
 
   // Function to handle post deletion
   const handleDeletePost = async (postId) => {
+    if (!window.confirm("Are you sure you want to delete this post?")) {
+      return;
+    }
     try {
       await api.delete(`/posts/${postId}`);
       setPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId)); // Remove post from state
