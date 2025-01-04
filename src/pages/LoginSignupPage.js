@@ -13,6 +13,7 @@ const LoginSignupPage = () => {
     email: "",
     password: "",
   });
+
   const [error, setError] = useState("");
 
   const handleInputChange = (e) => {

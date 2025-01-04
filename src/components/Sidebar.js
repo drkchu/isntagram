@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -7,13 +7,18 @@ import {
   faPlus,
   faEnvelope,
   faUser,
+  faRightFromBracket
 } from "@fortawesome/free-solid-svg-icons";
+import { AuthContext } from "../context/AuthContext"; // Import your AuthContext
+import { useNavigate } from "react-router-dom";
 import SearchModal from "./SearchModal";
 import PostModal from "./PostModal";
 
 function Sidebar() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isPostOpen, setIsPostOpen] = useState(false);
+  const { logout } = useContext(AuthContext);
+  const navigate = useNavigate(); 
 
   return (
     <div className="p-4 flex flex-col gap-12 h-screen">
@@ -39,6 +44,9 @@ function Sidebar() {
       </Link>
       <Link to="/profile/self" className="btn btn-ghost text-2xl">
         <FontAwesomeIcon icon={faUser} />
+      </Link>
+      <Link onClick={logout} to="/login-signup" className="btn btn-ghost text-2xl">
+        <FontAwesomeIcon icon={faRightFromBracket} />
       </Link>
 
       {/* Search Modal */}

@@ -5,6 +5,7 @@ import AuthCallback from "./pages/AuthCallback";
 import ProfilePage from "./pages/ProfilePage";
 import EditProfilePage from "./pages/EditProfilePage";
 import HomePage from "./pages/HomePage";
+import NotFoundPage from "./pages/NotFoundPage";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"; // For React Query v5+
 import MessagesPage from "./pages/MessagesPage";
 
@@ -21,6 +22,8 @@ const App = () => {
           <Route path="/profile/:userProfile" element={<ProfilePage />} />
           <Route path="/messages" element={<MessagesPage />} />
           <Route path="/" element={<HomePage />} />
+          {/* Catch-All Route for 404 Pages */}
+        <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Router>
     </QueryClientProvider>
