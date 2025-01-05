@@ -7,10 +7,10 @@ import { jwtDecode } from "jwt-decode";
 import api from "../api/axios";
 
 const CommentSection = ({ postId }) => {
-  const { user } = useContext(AuthContext);     // So I know who the current user is
+  const { user } = useContext(AuthContext); // So I know who the current user is
   const [comments, setComments] = useState([]); // Local state for comments
   const [loading, setLoading] = useState(true); // Loading state
-  const [error, setError] = useState(null);     // Error state
+  const [error, setError] = useState(null); // Error state
 
   // Fetch comments when the component mounts
   const fetchComments = async () => {
@@ -27,9 +27,9 @@ const CommentSection = ({ postId }) => {
       setLoading(false);
     }
   };
-
   useEffect(() => {
     fetchComments(); // Initial fetch
+    // eslint-disable-next-line
   }, []);
 
   // Add a new comment
@@ -59,7 +59,11 @@ const CommentSection = ({ postId }) => {
 
   return (
     <div>
-      <CommentList comments={comments} currentUserId={jwtDecode(user).id} onDelete={handleDeleteComment} />
+      <CommentList
+        comments={comments}
+        currentUserId={jwtDecode(user).id}
+        onDelete={handleDeleteComment}
+      />
       <CommentForm onSubmit={handleAddComment} />
     </div>
   );
