@@ -30,7 +30,7 @@ const CommentSection = ({ postId }) => {
 
   useEffect(() => {
     fetchComments(); // Initial fetch
-  }, [postId]);
+  }, []);
 
   // Add a new comment
   const handleAddComment = async (newContent) => {

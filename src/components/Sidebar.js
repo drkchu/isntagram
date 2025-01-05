@@ -10,7 +10,6 @@ import {
   faRightFromBracket
 } from "@fortawesome/free-solid-svg-icons";
 import { AuthContext } from "../context/AuthContext"; // Import your AuthContext
-import { useNavigate } from "react-router-dom";
 import SearchModal from "./SearchModal";
 import PostModal from "./PostModal";
 
@@ -18,7 +17,6 @@ function Sidebar() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isPostOpen, setIsPostOpen] = useState(false);
   const { logout } = useContext(AuthContext);
-  const navigate = useNavigate(); 
 
   return (
     <div className="p-4 flex flex-col gap-12 h-screen">
