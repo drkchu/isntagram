@@ -1,5 +1,5 @@
 import { io } from "socket.io-client";
 
-const socket = io("http://localhost:3000"); // My backend URL
+const socket = io("https://isntagram-api.onrender.com"); // My backend URL
 
 export default socket;

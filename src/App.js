@@ -23,7 +23,7 @@ const App = () => {
           <Route path="/messages" element={<MessagesPage />} />
           <Route path="/" element={<HomePage />} />
           {/* Catch-All Route for 404 Pages */}
-        <Route path="*" element={<NotFoundPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Router>
     </QueryClientProvider>
