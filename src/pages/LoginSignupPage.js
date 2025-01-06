@@ -53,7 +53,7 @@ const LoginSignupPage = () => {
   };
 
   const handleGitHubLogin = () => {
-    window.location.href = `${process.env.REACT_APP_API_URL}/auth/github`; // Endpoint for GitHub OAuth
+    window.location.href = `${process.env.REACT_APP_API_URL ? process.env.REACT_APP_API_URL : 'http://localhost:3000'}/auth/github`; // Endpoint for GitHub OAuth
   };
 
   return (
