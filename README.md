@@ -1,6 +1,6 @@
 # Isntagram
 
-This is a custom social media site to see what's going on with your friends. Built with React.
+This is a custom social media site to see what's going on with your friends. Built with React. Click [here](https://isntagram-site.netlify.app/) for the live app!
 
 Here's the [backend](https://github.com/drkchu/isntagram-api) repo
 
