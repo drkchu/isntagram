@@ -2,7 +2,7 @@
 
 This is a custom social media site to see what's going on with your friends. Built with React. Click [here](https://isntagram-site.netlify.app/) for the live app!
 
- Note: After inactivity, expect delays before logging in to the homepage before the DB spins back up again. Be patient, it takes about a minute from the sign up page!
+ Note: After inactivity, expect delays before logging in to the homepage before the DB spins back up again. While waiting, the server will return a `404` error since I'm using the free tiers on Netlify and Render. Be patient, it takes about a minute from the sign up page!
 
 Here's the [backend](https://github.com/drkchu/isntagram-api) repo
 
